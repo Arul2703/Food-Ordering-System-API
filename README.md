@@ -1,4 +1,4 @@
-# 🍽️ Food Ordering System API
+# 🍔🍽️ Food Ordering System API
 
 The Food Ordering System API manages user authentication, account creation, login, profile management, cart operations, and order handling for a food ordering system.
 
