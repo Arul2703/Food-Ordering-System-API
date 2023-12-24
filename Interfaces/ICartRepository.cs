@@ -6,7 +6,7 @@ namespace FoodOrderingSystemAPI.Interfaces
     public interface ICartRepository
     {
         IEnumerable<Cart> GetCartItems();
-        // IEnumerable<Cart> GetCartItemsByUserId(int userId);
+        IEnumerable<Cart> GetCartItemsByUserId(int userId);
         void AddToCart(Cart cartItem);
         void IncreaseQuantity(int productId);
         void DecreaseQuantity(int productId);

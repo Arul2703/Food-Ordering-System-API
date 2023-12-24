@@ -28,7 +28,7 @@ namespace FoodOrderingSystemAPI.Models
         [Required(ErrorMessage ="Confirm Password Required!")]
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W).{6,}$",ErrorMessage = "Use 6 or more characters with a mix of letters, numbers & symbols")]
         [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "Password and Confirm Password should be same")]
+        [Compare("password", ErrorMessage = "Password and Confirm Password should be same")]
         public string confirmPassword { get; set; }
         public bool isAdmin { get; set; }
 

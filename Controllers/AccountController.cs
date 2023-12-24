@@ -200,8 +200,10 @@ namespace FoodOrderingSystemAPI.Controllers
                     // HttpContext.Session.SetInt32("UserId", user.userId);
                     string userIdKey = _configuration["SessionSettings:UserId"];
                     HttpContext.Session.SetInt32(userIdKey, user.userId);
+                    var userIdClaimType = _configuration["JwtSettings:UserIdClaimType"];
                     List<Claim> claims = new List<Claim>(){
                         new Claim(ClaimTypes.NameIdentifier, login.email),
+                        new Claim(userIdClaimType, user.userId.ToString())
                     };
                     if ((bool)user.isAdmin)
                     {
@@ -263,7 +265,7 @@ namespace FoodOrderingSystemAPI.Controllers
             {
                 // int userId = HttpContext.Session.GetInt32("UserId") ?? 0;
                 var userProfile = await _userRepository.GetUserProfileByUserIdAsync(userId);
-
+                
                 if (userProfile != null)
                 {
                     return Ok(userProfile);

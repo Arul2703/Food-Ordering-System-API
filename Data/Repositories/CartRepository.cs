@@ -19,10 +19,10 @@ namespace OrderCartServiceAPI.Repositories
         {
             return _foodAppDbContext.Carts.ToList();
         }
-        // public IEnumerable<Cart> GetCartItemsByUserId(int userId)
-        // {
-        //     return _ordercartdbContext.Carts.Where(c => c.userId == userId).ToList();
-        // }
+        public IEnumerable<Cart> GetCartItemsByUserId(int userId)
+        {
+            return _foodAppDbContext.Carts.Where(c => c.userId == userId).ToList();
+        }
 
 
         public void AddToCart(Cart cartItem)

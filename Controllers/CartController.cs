@@ -6,6 +6,7 @@
 // Updated at   : 20/12/2023
 // Reviewed by  : 
 // Reviewed at  : 
+using System.Security.Claims;
 using System.Collections.Generic;
 using FoodOrderingSystemAPI.Interfaces;
 using FoodOrderingSystemAPI.Models;
@@ -28,24 +29,14 @@ namespace OrderCartServiceAPI.Controllers
             _configuration = configuration;
             _logger = logger;
         }
-    
 
-        // [Authorize(Roles="User")]
-        [HttpGet]
-        public ActionResult<IEnumerable<Cart>> GetCartItems()
+        [Authorize(Roles = "User")]
+        [HttpGet("{userId}")]
+        public ActionResult<IEnumerable<Cart>> GetCartItemsByUserId(int userId)
         {
-            // int userId = HttpContext.Session.GetInt32("UserId") ?? default(int);
-            var cartItems = _cartRepository.GetCartItems();
+            var cartItems = _cartRepository.GetCartItemsByUserId(userId);
             return Ok(cartItems);
         }
-
-        // [Authorize(Roles = "User")]
-        // [HttpGet("Cart/{userId}")]
-        // public ActionResult<IEnumerable<Cart>> GetCartItemsByUserId(int userId)
-        // {
-        //     var cartItems = _cartRepository.GetCartItemsByUserId(userId);
-        //     return Ok(cartItems);
-        // }
 
 
         // [Authorize(Roles="User")]
