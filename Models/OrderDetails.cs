@@ -6,7 +6,7 @@ namespace FoodOrderingSystemAPI.Models{
     public string? orderStatus {get;set;}
     public string foodItemName { get; set; }
     public string foodItemDescription{get;set;}
-    public string foodItemImageUrl { get; set; }
+    public byte[] foodItemImageUrl { get; set; }
     public int foodItemPrice { get; set; }
     public int foodItemQty { get; set; }
     public string transactionId{get;set;}

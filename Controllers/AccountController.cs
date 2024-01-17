@@ -94,19 +94,23 @@ namespace FoodOrderingSystemAPI.Controllers
         {
             try
             {
-                string fromMail = _emailSettings.fromMail;
-                string fromPassword = _emailSettings.fromPassword;
+                string fromMail = _configuration["EmailSettings:FromMail"];
+                string fromPassword = _configuration["EmailSettings:FromPassword"];
+                string otpEmailTemplate = _configuration["EmailSettings:OtpEmailTemplate"];
+                string otpEmailSubject = _configuration["EmailSettings:OtpEmailSubject"];
+                string smtpHost = _configuration["EmailSettings:SmtpHost"];
+                int smtpPort = int.Parse(_configuration["EmailSettings:SmtpPort"]);
 
                 MailMessage mailmessage = new MailMessage();
                 mailmessage.From = new MailAddress(fromMail);
-                mailmessage.Subject = _emailSettings.otpEmailSubject; 
+                mailmessage.Subject = otpEmailSubject;
                 mailmessage.To.Add(new MailAddress(email));
-                mailmessage.Body = string.Format(_emailSettings.otpEmailTemplate, otp);
+                mailmessage.Body = otpEmailTemplate.Replace("{{otp}}", otp);
                 mailmessage.IsBodyHtml = true;
 
-                var smtpClient = new SmtpClient(_emailSettings.smtpHost)
+                var smtpClient = new SmtpClient(smtpHost)
                 {
-                    Port = _emailSettings.smtpPort,
+                    Port = smtpPort,
                     Credentials = new NetworkCredential(fromMail, fromPassword),
                     EnableSsl = true,
                 };
@@ -115,9 +119,10 @@ namespace FoodOrderingSystemAPI.Controllers
             }
             catch (Exception exception)
             {
-                return false; 
+                return false;
             }
         }
+
 
         [AllowAnonymous]
         [HttpPost("Signup")]

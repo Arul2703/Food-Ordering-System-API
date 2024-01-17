@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FoodOrderingSystemAPI.Migrations
 {
     [DbContext(typeof(FoodAppDbContext))]
-    [Migration("20230729131026_OTPForeignKey")]
-    partial class OTPForeignKey
+    [Migration("20231228163548_IsCheckedout")]
+    partial class IsCheckedout
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,6 +32,9 @@ namespace FoodOrderingSystemAPI.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<bool>("IsCheckedOut")
+                        .HasColumnType("bit");
 
                     b.Property<int>("foodItemId")
                         .HasColumnType("int");
@@ -63,268 +66,268 @@ namespace FoodOrderingSystemAPI.Migrations
 
             modelBuilder.Entity("FoodOrderingSystemAPI.Models.Checkout", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
-                    b.Property<string>("Address")
+                    b.Property<string>("address")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Email")
+                    b.Property<string>("email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("MobileNumber")
+                    b.Property<string>("mobileNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PinCode")
+                    b.Property<string>("pincode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserID")
+                    b.Property<int>("userId")
                         .HasColumnType("int");
 
-                    b.HasKey("ID");
+                    b.HasKey("id");
 
                     b.ToTable("CheckoutDetails");
                 });
 
             modelBuilder.Entity("FoodOrderingSystemAPI.Models.FoodCategory", b =>
                 {
-                    b.Property<string>("Name")
+                    b.Property<string>("name")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Name");
+                    b.HasKey("name");
 
                     b.ToTable("FoodCategories");
                 });
 
             modelBuilder.Entity("FoodOrderingSystemAPI.Models.FoodItem", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
-                    b.Property<float>("Calories")
-                        .HasColumnType("real");
-
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FoodCategoryName")
+                    b.Property<string>("FoodCategoryname")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsVegan")
+                    b.Property<bool>("IsInGallery")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Name")
+                    b.Property<float>("calories")
+                        .HasColumnType("real");
+
+                    b.Property<string>("category")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Price")
+                    b.Property<string>("description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("imageUrl")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<bool>("isVegan")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("price")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("id");
 
-                    b.HasIndex("FoodCategoryName");
+                    b.HasIndex("FoodCategoryname");
 
                     b.ToTable("FoodItems");
                 });
 
             modelBuilder.Entity("FoodOrderingSystemAPI.Models.InvoiceModel", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<DateTime?>("DateInvoice")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("FKUserID")
-                        .IsRequired()
-                        .HasColumnType("int");
-
-                    b.Property<string>("OrderId")
-                        .HasColumnType("nvarchar(max)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
                     b.Property<float>("Total_Bill")
                         .HasColumnType("real");
 
-                    b.Property<string>("TransactionId")
+                    b.Property<DateTime?>("dateOfInvoice")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("orderId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ID");
+                    b.Property<string>("transactionId")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("FKUserID");
+                    b.Property<int?>("userId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("userId");
 
                     b.ToTable("invoiceModel");
                 });
 
-            modelBuilder.Entity("FoodOrderingSystemAPI.Models.OTPModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ExpirationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("FKUserID")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsVerified")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("OTPValue")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FKUserID");
-
-                    b.ToTable("OTPModels");
-                });
-
             modelBuilder.Entity("FoodOrderingSystemAPI.Models.Order", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
-                    b.Property<int?>("FkFoodItemId")
+                    b.Property<int?>("foodItemId")
                         .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<int?>("FkInvoiceID")
+                    b.Property<int?>("invoiceId")
                         .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<string>("OrderStatus")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<float>("Order_Bill")
+                    b.Property<float>("orderBill")
                         .HasColumnType("real");
 
-                    b.Property<DateTime?>("Order_Date")
+                    b.Property<DateTime?>("orderDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Qty")
+                    b.Property<string>("orderStatus")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("quantity")
                         .HasColumnType("int");
 
-                    b.Property<int>("Unit_Price")
+                    b.Property<int>("unitPrice")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("id");
 
-                    b.HasIndex("FkFoodItemId");
+                    b.HasIndex("foodItemId");
 
-                    b.HasIndex("FkInvoiceID");
+                    b.HasIndex("invoiceId");
 
                     b.ToTable("orders");
                 });
 
-            modelBuilder.Entity("FoodOrderingSystemAPI.Models.SignupLogin", b =>
+            modelBuilder.Entity("FoodOrderingSystemAPI.Models.OtpModel", b =>
                 {
-                    b.Property<int>("userid")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("userid"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
-                    b.Property<string>("ConfirmPassword")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Password")
+                    b.Property<string>("email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("RememberMe")
+                    b.Property<bool>("isVerified")
                         .HasColumnType("bit");
+
+                    b.Property<string>("otpValue")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("userId")
+                        .HasColumnType("int");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("userId");
+
+                    b.ToTable("otpModels");
+                });
+
+            modelBuilder.Entity("FoodOrderingSystemAPI.Models.SignupLogin", b =>
+                {
+                    b.Property<int>("userId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("userId"));
+
+                    b.Property<string>("confirmPassword")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("email")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("isAdmin")
                         .HasColumnType("bit");
 
-                    b.HasKey("userid");
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("rememberMe")
+                        .HasColumnType("bit");
+
+                    b.HasKey("userId");
 
                     b.ToTable("SignupLogin");
                 });
 
             modelBuilder.Entity("FoodOrderingSystemAPI.Models.UserProfile", b =>
                 {
-                    b.Property<int>("ProfileId")
+                    b.Property<int>("profileId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProfileId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("profileId"));
 
-                    b.Property<string>("Address")
+                    b.Property<string>("address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Email")
+                    b.Property<string>("email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("FKUserID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MobileNumber")
+                    b.Property<string>("mobileNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Pincode")
+                    b.Property<int?>("pincode")
                         .HasColumnType("int");
 
-                    b.Property<byte[]>("ProfilePicture")
+                    b.Property<byte[]>("profilePicture")
                         .HasColumnType("varbinary(max)");
 
-                    b.HasKey("ProfileId");
+                    b.Property<int>("userId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("FKUserID");
+                    b.HasKey("profileId");
+
+                    b.HasIndex("userId");
 
                     b.ToTable("UserProfile");
                 });
@@ -332,26 +335,15 @@ namespace FoodOrderingSystemAPI.Migrations
             modelBuilder.Entity("FoodOrderingSystemAPI.Models.FoodItem", b =>
                 {
                     b.HasOne("FoodOrderingSystemAPI.Models.FoodCategory", null)
-                        .WithMany("Items")
-                        .HasForeignKey("FoodCategoryName");
+                        .WithMany("items")
+                        .HasForeignKey("FoodCategoryname");
                 });
 
             modelBuilder.Entity("FoodOrderingSystemAPI.Models.InvoiceModel", b =>
                 {
                     b.HasOne("FoodOrderingSystemAPI.Models.SignupLogin", "user")
                         .WithMany()
-                        .HasForeignKey("FKUserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("user");
-                });
-
-            modelBuilder.Entity("FoodOrderingSystemAPI.Models.OTPModel", b =>
-                {
-                    b.HasOne("FoodOrderingSystemAPI.Models.SignupLogin", "user")
-                        .WithMany()
-                        .HasForeignKey("FKUserID")
+                        .HasForeignKey("userId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -362,13 +354,13 @@ namespace FoodOrderingSystemAPI.Migrations
                 {
                     b.HasOne("FoodOrderingSystemAPI.Models.FoodItem", "foodItems")
                         .WithMany()
-                        .HasForeignKey("FkFoodItemId")
+                        .HasForeignKey("foodItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("FoodOrderingSystemAPI.Models.InvoiceModel", "invoices")
                         .WithMany()
-                        .HasForeignKey("FkInvoiceID")
+                        .HasForeignKey("invoiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -377,11 +369,22 @@ namespace FoodOrderingSystemAPI.Migrations
                     b.Navigation("invoices");
                 });
 
+            modelBuilder.Entity("FoodOrderingSystemAPI.Models.OtpModel", b =>
+                {
+                    b.HasOne("FoodOrderingSystemAPI.Models.SignupLogin", "user")
+                        .WithMany()
+                        .HasForeignKey("userId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("user");
+                });
+
             modelBuilder.Entity("FoodOrderingSystemAPI.Models.UserProfile", b =>
                 {
                     b.HasOne("FoodOrderingSystemAPI.Models.SignupLogin", "user")
                         .WithMany()
-                        .HasForeignKey("FKUserID")
+                        .HasForeignKey("userId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -390,7 +393,7 @@ namespace FoodOrderingSystemAPI.Migrations
 
             modelBuilder.Entity("FoodOrderingSystemAPI.Models.FoodCategory", b =>
                 {
-                    b.Navigation("Items");
+                    b.Navigation("items");
                 });
 #pragma warning restore 612, 618
         }

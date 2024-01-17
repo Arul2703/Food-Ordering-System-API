@@ -15,7 +15,7 @@ namespace FoodOrderingSystemAPI.Models{
     public string description { get; set; }
     
     [Required]
-    public string imageUrl { get; set; }
+    public byte[] imageUrl { get; set; }
     
     [Required]
     public string category { get; set; }
@@ -25,5 +25,6 @@ namespace FoodOrderingSystemAPI.Models{
 
     [Required]
     public float calories { get; set; }
+    public bool IsInGallery { get; set; }
   }
 }

@@ -14,6 +14,8 @@ using Microsoft.IdentityModel.Tokens;
 using OrderCartServiceAPI.Repositories;
 using System.Text;
 using Serilog;
+using FoodMenuApi.Services;
+using FoodOrderingSystemAPI.Constraints;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,6 +55,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddDbContext<FoodAppDbContext>(options =>
     options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IFoodMenuService, MenuService>();
 builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
@@ -65,6 +68,14 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+
+builder.Services.Configure<RouteOptions>(options =>
+{
+    options.ConstraintMap.Add("category", typeof(CategoryRouteConstraint));
+    options.ConstraintMap.Add("handler", typeof(CategoryRouteHandler));
+});
+
+
 builder.Services.AddCors();
 string logFileLocation = configuration["Logging:LogFileLocation"];
 var _logger = new LoggerConfiguration()

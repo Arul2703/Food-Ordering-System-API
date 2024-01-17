@@ -18,5 +18,8 @@ namespace FoodOrderingSystemAPI.Models
         public float totalAmount { get; set; }
         public int foodItemId{get;set;}
         public int userId {get;set;}
+        public bool IsCheckedOut { get; set; }
+
+
     }
 }

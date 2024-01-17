@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using System.Linq;
 
-namespace FoodMenuApi.Constraints
+namespace FoodOrderingSystemAPI.Constraints
 {
     public class CategoryRouteConstraint : IRouteConstraint
     {

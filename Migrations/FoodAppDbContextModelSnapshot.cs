@@ -30,6 +30,9 @@ namespace FoodOrderingSystemAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
+                    b.Property<bool>("IsCheckedOut")
+                        .HasColumnType("bit");
+
                     b.Property<int>("foodItemId")
                         .HasColumnType("int");
 
@@ -115,6 +118,9 @@ namespace FoodOrderingSystemAPI.Migrations
                     b.Property<string>("FoodCategoryname")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<bool>("IsInGallery")
+                        .HasColumnType("bit");
+
                     b.Property<float>("calories")
                         .HasColumnType("real");
 
@@ -126,9 +132,9 @@ namespace FoodOrderingSystemAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("imageUrl")
+                    b.Property<byte[]>("imageUrl")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<bool>("isVegan")
                         .HasColumnType("bit");

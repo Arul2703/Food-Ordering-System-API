@@ -21,14 +21,16 @@ namespace FoodOrderingSystemAPI.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly ICartRepository _cartRepository;
         private readonly IConfiguration _configuration;
         private readonly ILogger<OrderController> _logger;
 
-        public OrderController(IOrderRepository orderRepository,IConfiguration configuration,ILogger<OrderController> logger)
+        public OrderController(IOrderRepository orderRepository,IConfiguration configuration,ILogger<OrderController> logger,ICartRepository cartRepository)
         {
             _orderRepository = orderRepository;
             _configuration = configuration;
             _logger = logger;
+            _cartRepository = cartRepository;
         }
 
         [Authorize(Roles = "User")]
@@ -79,6 +81,8 @@ namespace FoodOrderingSystemAPI.Controllers
                 };
                 await _orderRepository.AddCheckoutDetailAsync(checkoutDetails);
 
+                var userId = checkoutrequest.cart.FirstOrDefault()?.userId ?? 0;
+                _cartRepository.MarkCartItemsAsCheckedOut(userId);
                 Random _random = new Random();
                 int minValue = _configuration.GetValue<int>("AppSettings:TransactionId:MinValue");
                 int maxValue = _configuration.GetValue<int>("AppSettings:TransactionId:MaxValue");
@@ -131,7 +135,6 @@ namespace FoodOrderingSystemAPI.Controllers
             }
         }
 
-
         // [Authorize(Roles = "User")]
         [HttpGet("OrderHistory")]
         public async Task<IActionResult> GetOrderHistory(int userId)
@@ -158,5 +161,46 @@ namespace FoodOrderingSystemAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, errorMessage);
             }
         }
+
+        // [HttpPost]  
+        //  public async Task<IActionResult> AddFoodItemAsync([FromForm] FoodItemRequest foodItemRequest)
+        // {
+        //     try
+        //     {
+        //         if (!ModelState.IsValid)
+        //         {
+        //             return BadRequest(ModelState);
+        //         }
+        //         byte[] imageBytes = null;
+
+        //         using (var memorystream = new MemoryStream())
+        //         {
+        //             foodItemRequest.image.OpenReadStream().CopyTo(memorystream);
+        //             imageBytes = memorystream.ToArray();
+        //         }
+
+        //         var foodItem = new FoodItem
+        //         {
+        //             name = foodItemRequest.name,
+        //             price = foodItemRequest.price,
+        //             description = foodItemRequest.description,
+        //             imageUrl = imageBytes,
+        //             category = foodItemRequest.category,
+        //             isVegan = foodItemRequest.isVegan,
+        //             calories = foodItemRequest.calories
+        //         };
+
+        //         await _foodMenuService.AddFoodItemAsync(foodItem);
+        //         return Ok(foodItem);
+        //     }
+        //     catch (Exception exception)
+        //     {
+        //         // _logger.LogError(ex, "Error occurred while adding a new food item.");
+        //         // return StatusCode(500, "An error occurred while adding a new food item.");
+        //         _logger.LogError(exception, _configuration["Messages:Error:AddFoodItem"]);
+        //         return StatusCode(500, _configuration["Messages:Error:AddFoodItem"]);
+        //     }
+        // }
+
     }
 }

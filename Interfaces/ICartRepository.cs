@@ -11,5 +11,6 @@ namespace FoodOrderingSystemAPI.Interfaces
         void IncreaseQuantity(int productId);
         void DecreaseQuantity(int productId);
         void RemoveCartItem(int itemId);
+        void MarkCartItemsAsCheckedOut(int userId);
     }
 }

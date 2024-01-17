@@ -11,7 +11,9 @@ namespace AccountAPI.Data
 
         public DbSet<SignupLogin> SignupLogin { get; set; }
         public DbSet<UserProfile> UserProfile{get;set;}
-        public DbSet<FoodItem> FoodItems { get; set; }
+        // public DbSet<FoodItem> FoodItems { get; set; }
+        public DbSet<FoodItem> FoodItems {get;set;}
+
         public DbSet<FoodCategory> FoodCategories { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<InvoiceModel> invoiceModel { get; set; }

@@ -3,6 +3,7 @@ using System.Linq;
 using AccountAPI.Data;
 using FoodOrderingSystemAPI.Interfaces;
 using FoodOrderingSystemAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace OrderCartServiceAPI.Repositories
 {
@@ -21,7 +22,9 @@ namespace OrderCartServiceAPI.Repositories
         }
         public IEnumerable<Cart> GetCartItemsByUserId(int userId)
         {
-            return _foodAppDbContext.Carts.Where(c => c.userId == userId).ToList();
+            return _foodAppDbContext.Carts
+            .Where(c => c.userId == userId && !c.IsCheckedOut)
+            .ToList();
         }
 
 
@@ -82,6 +85,18 @@ namespace OrderCartServiceAPI.Repositories
                 _foodAppDbContext.Carts.Remove(cartItem);
                 _foodAppDbContext.SaveChanges();
             }
+        }
+
+        public void MarkCartItemsAsCheckedOut(int userId)
+        {
+            var cartItems = _foodAppDbContext.Carts.Where(c => c.userId == userId && !c.IsCheckedOut);
+            foreach (var cartItem in cartItems)
+            {
+                cartItem.IsCheckedOut = true;
+                _foodAppDbContext.Entry(cartItem).Property(c => c.IsCheckedOut).IsModified = true;
+            }
+
+            _foodAppDbContext.SaveChanges();
         }
     }
 }
